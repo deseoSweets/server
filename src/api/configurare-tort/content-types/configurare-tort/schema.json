@@ -1,0 +1,35 @@
+{
+  "kind": "singleType",
+  "collectionName": "configurare_torturi",
+  "info": {
+    "singularName": "configurare-tort",
+    "pluralName": "configurare-torturi",
+    "displayName": "Tort",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Blat": {
+      "displayName": "Blaturi",
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.blaturi",
+      "required": true
+    },
+    "Creme": {
+      "displayName": "Creme",
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.creme"
+    },
+    "Insertii": {
+      "displayName": "Insertii",
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.insertii"
+    }
+  }
+}

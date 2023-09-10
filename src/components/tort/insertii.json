@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_tort_insertiis",
+  "info": {
+    "displayName": "Insertii",
+    "icon": "oneWay"
+  },
+  "options": {},
+  "attributes": {
+    "tipInsertie": {
+      "type": "string",
+      "required": true
+    },
+    "pret": {
+      "type": "decimal"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_tort_cremes",
+  "info": {
+    "displayName": "Creme",
+    "icon": "filter"
+  },
+  "options": {},
+  "attributes": {
+    "tipCrema": {
+      "type": "string",
+      "required": true
+    },
+    "pret": {
+      "type": "decimal",
+      "required": true
+    }
+  }
+}
