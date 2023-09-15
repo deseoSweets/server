@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "torts",
+  "info": {
+    "singularName": "tort",
+    "pluralName": "torts",
+    "displayName": "Tort"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Blaturi": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.blaturi",
+      "required": true
+    },
+    "Creme": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.creme",
+      "required": true
+    },
+    "Insertii": {
+      "type": "component",
+      "repeatable": true,
+      "component": "tort.insertii",
+      "required": true
+    }
+  }
+}

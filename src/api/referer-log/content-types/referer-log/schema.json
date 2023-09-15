@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "referer_logs",
+  "info": {
+    "singularName": "referer-log",
+    "pluralName": "referer-logs",
+    "displayName": "refererLog"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "referer": {
+      "type": "text",
+      "required": true
+    },
+    "timestamp": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}

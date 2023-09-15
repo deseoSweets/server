@@ -57,6 +57,17 @@
       "relation": "manyToOne",
       "target": "api::categorie.categorie",
       "inversedBy": "produses"
+    },
+    "categ": {
+      "type": "enumeration",
+      "enum": [
+        "Ecler",
+        "Choux",
+        "Brest",
+        "Tarta",
+        "Macaron",
+        "Sezonier"
+      ]
     }
   }
 }
