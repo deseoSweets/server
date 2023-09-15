@@ -4,7 +4,8 @@
   "info": {
     "singularName": "referer-log",
     "pluralName": "referer-logs",
-    "displayName": "refererLog"
+    "displayName": "refererLog",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -13,10 +14,6 @@
   "attributes": {
     "referer": {
       "type": "text",
-      "required": true
-    },
-    "timestamp": {
-      "type": "datetime",
       "required": true
     }
   }
