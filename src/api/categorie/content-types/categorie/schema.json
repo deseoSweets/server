@@ -16,9 +16,6 @@
       "type": "string",
       "required": true
     },
-    "descriere": {
-      "type": "text"
-    },
     "coverCategorie": {
       "type": "media",
       "multiple": false,
@@ -30,11 +27,14 @@
         "audios"
       ]
     },
-    "produses": {
+    "produse": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::produs.produs",
       "mappedBy": "categorie"
+    },
+    "urlCover": {
+      "type": "string"
     }
   }
 }

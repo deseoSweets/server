@@ -27,24 +27,8 @@
         "audios"
       ]
     },
-    "pozeSecundare": {
-      "type": "media",
-      "multiple": true,
-      "required": false,
-      "allowedTypes": [
-        "images",
-        "files",
-        "videos",
-        "audios"
-      ]
-    },
     "pret": {
       "type": "decimal",
-      "required": true
-    },
-    "activ": {
-      "type": "boolean",
-      "default": false,
       "required": true
     },
     "slug": {
@@ -52,22 +36,15 @@
       "targetField": "title",
       "required": true
     },
+    "imgUrl": {
+      "type": "string",
+      "required": true
+    },
     "categorie": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::categorie.categorie",
-      "inversedBy": "produses"
-    },
-    "categ": {
-      "type": "enumeration",
-      "enum": [
-        "Ecler",
-        "Choux",
-        "Brest",
-        "Tarta",
-        "Macaron",
-        "Sezonier"
-      ]
+      "inversedBy": "produse"
     }
   }
 }
