@@ -7,7 +7,7 @@
   },
   "options": {},
   "attributes": {
-    "tipBlat": {
+    "tip": {
       "type": "string",
       "required": true,
       "unique": false
@@ -15,6 +15,11 @@
     "pret": {
       "type": "decimal",
       "required": true
+    },
+    "hex": {
+      "type": "string",
+      "required": true,
+      "unique": false
     }
   }
 }

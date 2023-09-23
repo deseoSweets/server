@@ -2,16 +2,21 @@
   "collectionName": "components_tort_insertiis",
   "info": {
     "displayName": "Insertii",
-    "icon": "oneWay"
+    "icon": "oneWay",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "tipInsertie": {
+    "tip": {
       "type": "string",
       "required": true
     },
     "pret": {
       "type": "decimal"
+    },
+    "hex": {
+      "type": "string",
+      "required": true
     }
   }
 }

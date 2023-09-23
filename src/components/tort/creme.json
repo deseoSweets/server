@@ -2,16 +2,21 @@
   "collectionName": "components_tort_cremes",
   "info": {
     "displayName": "Creme",
-    "icon": "filter"
+    "icon": "filter",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "tipCrema": {
+    "tip": {
       "type": "string",
       "required": true
     },
     "pret": {
       "type": "decimal",
+      "required": true
+    },
+    "hex": {
+      "type": "string",
       "required": true
     }
   }
