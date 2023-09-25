@@ -27,11 +27,11 @@
         "audios"
       ]
     },
-    "produse": {
+    "produses": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::produs.produs",
-      "mappedBy": "categorie"
+      "inversedBy": "categories"
     },
     "urlCover": {
       "type": "string"

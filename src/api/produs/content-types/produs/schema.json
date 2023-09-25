@@ -40,11 +40,11 @@
       "type": "string",
       "required": true
     },
-    "categorie": {
+    "categories": {
       "type": "relation",
-      "relation": "manyToOne",
+      "relation": "manyToMany",
       "target": "api::categorie.categorie",
-      "inversedBy": "produse"
+      "mappedBy": "produses"
     }
   }
 }
