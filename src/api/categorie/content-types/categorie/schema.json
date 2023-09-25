@@ -27,7 +27,7 @@
         "audios"
       ]
     },
-    "produses": {
+    "produse": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::produs.produs",

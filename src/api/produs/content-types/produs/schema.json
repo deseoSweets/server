@@ -44,7 +44,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::categorie.categorie",
-      "mappedBy": "produses"
+      "mappedBy": "produse"
     }
   }
 }
