@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "title": {
+    "titlu": {
       "type": "string",
       "required": true
     },
@@ -33,10 +33,9 @@
     },
     "slug": {
       "type": "uid",
-      "targetField": "title",
       "required": true
     },
-    "imgUrl": {
+    "imagine1Url": {
       "type": "string",
       "required": true
     },
@@ -45,6 +44,33 @@
       "relation": "manyToMany",
       "target": "api::categorie.categorie",
       "mappedBy": "produse"
+    },
+    "pozaSecundara": {
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "imagine2Url": {
+      "type": "string",
+      "required": true
+    },
+    "ingrediente": {
+      "type": "richtext",
+      "required": true
+    },
+    "alergeni": {
+      "type": "richtext",
+      "required": true
+    },
+    "valoriNutritionale": {
+      "type": "richtext",
+      "required": true
     }
   }
 }
