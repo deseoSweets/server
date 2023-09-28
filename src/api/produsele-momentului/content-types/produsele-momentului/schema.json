@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "produsele_momentuluis",
+  "info": {
+    "singularName": "produsele-momentului",
+    "pluralName": "produsele-momentuluis",
+    "displayName": "Produsele Momentului"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "produse": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::produs.produs"
+    }
+  }
+}

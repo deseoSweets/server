@@ -35,6 +35,11 @@
     },
     "urlCover": {
       "type": "string"
+    },
+    "categorieSpeciala": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }
