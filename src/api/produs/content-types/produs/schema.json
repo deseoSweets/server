@@ -33,7 +33,8 @@
     },
     "slug": {
       "type": "uid",
-      "required": true
+      "required": true,
+      "targetField": "titlu"
     },
     "imagine1Url": {
       "type": "string",
@@ -46,19 +47,19 @@
       "mappedBy": "produse"
     },
     "pozaSecundara": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false,
-      "required": true
+      ]
     },
     "imagine2Url": {
       "type": "string",
-      "required": true
+      "required": false
     },
     "ingrediente": {
       "type": "richtext",
