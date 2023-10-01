@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_seo_seo_produses",
+  "info": {
+    "displayName": "SeoProduse",
+    "icon": "archive"
+  },
+  "options": {},
+  "attributes": {
+    "Titlu": {
+      "type": "string",
+      "maxLength": 60
+    },
+    "Descriere": {
+      "type": "richtext"
+    }
+  }
+}

@@ -72,6 +72,11 @@
     "valoriNutritionale": {
       "type": "richtext",
       "required": true
+    },
+    "SEO": {
+      "type": "component",
+      "repeatable": false,
+      "component": "seo.seo-produse"
     }
   }
 }
