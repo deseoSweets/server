@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "cereri_candy_bars",
+  "info": {
+    "singularName": "cereri-candy-bar",
+    "pluralName": "cereri-candy-bars",
+    "displayName": "CereriCandyBar"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "nume": {
+      "type": "string",
+      "required": true
+    },
+    "numarTelefon": {
+      "type": "biginteger",
+      "required": true
+    },
+    "adresaEmail": {
+      "type": "email",
+      "required": true
+    },
+    "numarPersoane": {
+      "required": true,
+      "type": "integer"
+    },
+    "tipulEvenimentului": {
+      "type": "string",
+      "required": true
+    },
+    "comentariu": {
+      "type": "richtext",
+      "required": false
+    }
+  }
+}
