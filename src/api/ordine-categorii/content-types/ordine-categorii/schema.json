@@ -1,0 +1,20 @@
+{
+  "kind": "singleType",
+  "collectionName": "ordine_categoriis",
+  "info": {
+    "singularName": "ordine-categorii",
+    "pluralName": "ordine-categoriis",
+    "displayName": "OrdineCategorii"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "ordineCategorii": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::categorie.categorie"
+    }
+  }
+}
