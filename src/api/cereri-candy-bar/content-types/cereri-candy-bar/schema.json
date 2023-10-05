@@ -4,7 +4,8 @@
   "info": {
     "singularName": "cereri-candy-bar",
     "pluralName": "cereri-candy-bars",
-    "displayName": "CereriCandyBar"
+    "displayName": "CereriCandyBar",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -21,10 +22,10 @@
     },
     "adresaEmail": {
       "type": "email",
-      "required": true
+      "required": false
     },
     "numarPersoane": {
-      "required": true,
+      "required": false,
       "type": "integer"
     },
     "tipulEvenimentului": {
