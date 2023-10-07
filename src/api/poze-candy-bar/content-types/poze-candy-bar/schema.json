@@ -1,0 +1,21 @@
+{
+  "kind": "singleType",
+  "collectionName": "poze_candy_bars",
+  "info": {
+    "singularName": "poze-candy-bar",
+    "pluralName": "poze-candy-bars",
+    "displayName": "Poze Candy Bar"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "poza": {
+      "displayName": "poza",
+      "type": "component",
+      "repeatable": true,
+      "component": "reusable.poza"
+    }
+  }
+}
