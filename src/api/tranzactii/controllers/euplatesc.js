@@ -138,7 +138,7 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                 }
             })
 
-            ctx.redirect(paymentUrl.paymentUrl);
+            ctx.send(paymentUrl.paymentUrl);
         } catch (error) {
             console.error('Error:', error);
             ctx.status = 500;
