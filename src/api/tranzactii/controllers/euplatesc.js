@@ -115,10 +115,10 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                 currency,
                 invoiceId: `${formattedDate + todayRecords.length}`,
                 orderDescription,
-                successUrl: `http://localhost:1337/api/tranzactii/euplatesc/raspuns`,
-                backToSite: `http://localhost:1337/api/tranzactii/euplatesc/raspuns`,
+                successUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
+                backToSite: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
                 backToSiteMethod: 'POST',
-                failedUrl: `http://localhost:1337/api/tranzactii/euplatesc/raspuns`
+                failedUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`
             });
 
             // Create Strapi Trazaction
