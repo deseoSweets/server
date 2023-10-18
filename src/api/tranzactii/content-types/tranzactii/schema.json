@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tranzactiis",
+  "info": {
+    "singularName": "tranzactii",
+    "pluralName": "tranzactiis",
+    "displayName": "Tranzactii",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "amount": {
+      "type": "float",
+      "required": true
+    },
+    "currency": {
+      "type": "string",
+      "required": true
+    },
+    "invoiceId": {
+      "type": "uid",
+      "required": true
+    },
+    "fname": {
+      "type": "string",
+      "required": true
+    },
+    "lname": {
+      "type": "string",
+      "required": true
+    },
+    "company": {
+      "type": "string",
+      "required": false
+    },
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true
+    },
+    "status": {
+      "type": "string",
+      "required": false,
+      "default": "neplatit"
+    },
+    "produse": {
+      "type": "json",
+      "required": true
+    },
+    "paymentUrl": {
+      "type": "text",
+      "required": true
+    },
+    "dataRidicare": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
