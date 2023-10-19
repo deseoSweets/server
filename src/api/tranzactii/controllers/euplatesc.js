@@ -60,7 +60,7 @@ async function sendOrderEmail(tranzactie) {
         <tr>
           <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align:center;">${produs.nume}</td>
           <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align:center;">${produs.cantitate}</td>
-          <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align:center;">${produs.pret}</td>
+          <td style="border-bottom: 1px solid #ddd; padding: 8px; text-align:center;">${produs.pret * produs.cantitate}</td>
         </tr>
         `).join('')}
       </tbody>
