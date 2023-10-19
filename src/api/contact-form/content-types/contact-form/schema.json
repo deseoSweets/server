@@ -4,7 +4,8 @@
   "info": {
     "singularName": "contact-form",
     "pluralName": "contact-forms",
-    "displayName": "ContactForm"
+    "displayName": "ContactForm",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -17,7 +18,7 @@
     },
     "email": {
       "type": "email",
-      "required": true
+      "required": false
     },
     "numarTelefon": {
       "type": "biginteger",
