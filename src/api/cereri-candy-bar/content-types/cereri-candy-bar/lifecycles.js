@@ -12,9 +12,9 @@ module.exports = {
             try {
 
                 await mail.send({
-                    from: 'Comenzi Insightweb <noreplay@insightweb.ro>',
-                    replyTo: 'comezni@insightweb.ro',
-                    templateId: "d-15e06de3b9944bb09ca95b9313079a18",
+                    from: 'Deseo Sweets <noreply@deseosweets.ro>',
+                    replyTo: 'contact@deseosweets.ro',
+                    templateId: " d-f3a1e32223c74d2bbda7b7ae519a5831",
                     personalizations: [
                         {
                             to: `${result.adresaEmail}`,

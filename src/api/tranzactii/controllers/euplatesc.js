@@ -68,9 +68,9 @@ async function sendOrderEmail(tranzactie) {
   </div>`;
 
     const res = await mail.send({
-        from: 'Comenzi Insightweb <noreplay@insightweb.ro>',
-        replyTo: 'comezni@insightweb.ro',
-        templateId: "d-53bdb57bb9c543a98049f7aa9a0c453f",
+        from: 'Comenzi Deseo Sweets <noreply@deseosweets.ro>',
+        replyTo: 'contact@deseosweets.ro',
+        templateId: "d-e249b7b12dcc48febaab1e52b67f9d1c",
         personalizations: [
             {
                 to: `${tranzactie.email}`,
