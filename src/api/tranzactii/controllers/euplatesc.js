@@ -32,6 +32,7 @@ function getTodayDateRange() {
 
 function formatOrderDate(dateStr) {
     const dateObj = new Date(dateStr);
+    dateObj.setUTCMinutes(dateObj.getUTCMinutes() + 180);
 
     const year = dateObj.getUTCFullYear();
     const month = String(dateObj.getUTCMonth() + 1).padStart(2, '0');

@@ -10,7 +10,6 @@ module.exports = {
         const { result, params } = event
         if (result.adresaEmail) {
             try {
-
                 await mail.send({
                     from: 'Deseo Sweets <noreply@deseosweets.ro>',
                     replyTo: 'contact@deseosweets.ro',
