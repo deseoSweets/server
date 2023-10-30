@@ -77,6 +77,12 @@
       "type": "component",
       "repeatable": false,
       "component": "seo.seo-produse"
+    },
+    "mentiuni": {
+      "type": "richtext"
+    },
+    "pretVechi": {
+      "type": "float"
     }
   }
 }

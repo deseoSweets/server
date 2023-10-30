@@ -1,0 +1,22 @@
+{
+  "kind": "collectionType",
+  "collectionName": "coduri_discounts",
+  "info": {
+    "singularName": "coduri-discount",
+    "pluralName": "coduri-discounts",
+    "displayName": "coduriDiscount"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "cod": {
+      "type": "string",
+      "required": true
+    },
+    "procent": {
+      "type": "float"
+    }
+  }
+}
