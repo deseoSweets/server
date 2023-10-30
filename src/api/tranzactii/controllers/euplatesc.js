@@ -50,7 +50,7 @@ async function sendOrderEmail(tranzactie) {
     const productListHTML =`<div style="width:100%; ">
     <table style="width: 80%; border-collapse: collapse; margin:auto;">
       <thead>
-        <tr style="background-color: #FFEEF4;">
+        <tr style="background-color: #FFECEA;">
           <th style="border-top: 1px solid #ddd; padding: 8px; font-size:12px; text-align:center;">DESCRIERE</th>
           <th style="border-top: 1px solid #ddd; padding: 8px; font-size:12px; text-align:center;">CANTITATE</th>
           <th style="border-top: 1px solid #ddd; padding: 8px; font-size:12px; text-align:center;">PRET</th>
