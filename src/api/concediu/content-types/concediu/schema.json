@@ -1,0 +1,23 @@
+{
+  "kind": "collectionType",
+  "collectionName": "concedius",
+  "info": {
+    "singularName": "concediu",
+    "pluralName": "concedius",
+    "displayName": "Concediu"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "start": {
+      "type": "date",
+      "required": true
+    },
+    "end": {
+      "type": "date",
+      "required": true
+    }
+  }
+}
