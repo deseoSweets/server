@@ -64,6 +64,11 @@
     "discount": {
       "type": "float",
       "required": false
+    },
+    "ridicata": {
+      "type": "boolean",
+      "default": false,
+      "required": true
     }
   }
 }

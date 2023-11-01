@@ -43,11 +43,11 @@ function formatOrderDate(dateStr) {
 
     const formattedDate = `${year}/${month}/${day} ${hours}:${minutes}:${seconds}`;
 
-    return formattedDate; 
+    return formattedDate;
 }
 
 async function sendOrderEmail(tranzactie) {
-    const productListHTML =`<div style="width:100%; ">
+    const productListHTML = `<div style="width:100%; ">
     <table style="width: 80%; border-collapse: collapse; margin:auto;">
       <thead>
         <tr style="background-color: #FFECEA;">
@@ -78,7 +78,7 @@ async function sendOrderEmail(tranzactie) {
                 dynamicTemplateData: {
                     invoiceId: tranzactie.invoiceId,
                     date: formatOrderDate(tranzactie.createdAt),
-                    clientName: `${tranzactie.fname + " " +  tranzactie.lname}`,
+                    clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
                     email: tranzactie.email,
                     dataRidicare: tranzactie.dataRidicare,
                     produse: productListHTML,
@@ -90,11 +90,12 @@ async function sendOrderEmail(tranzactie) {
 
     return res
 }
-
+function removeDiacriticsAndUppercase(str) {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+  }
+  
 
 module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
-
-
     async create(ctx) {
         const { startOfDay, endOfDay, formattedDate } = getTodayDateRange();
         try {
@@ -109,13 +110,21 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
 
             // Get req body
             const { amount, currency, orderDescription, lname, fname, company, phone, email, dataRidicare } = ctx.request.body;
+            const orderEuPlatesc = orderDescription.produse.map((produs) => {
+                return `${produs.cantitate}x${removeDiacriticsAndUppercase(produs.nume)}`
+            }).join(', ')
 
             // Generate EuPlatesc paymentURL
             const paymentUrl = await epClient.paymentUrl({
                 amount,
                 currency,
                 invoiceId: `${formattedDate + todayRecords.length}`,
-                orderDescription,
+                orderDescription:orderEuPlatesc,
+                billingFirstName: fname,
+                billingLastName: lname,
+                billingCompany: company,
+                billingPhone: phone,
+                billingEmail: email,
                 successUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
                 backToSite: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
                 backToSiteMethod: 'POST',
@@ -184,28 +193,28 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
         if (res.success === true && res.response === "complete") {
 
             // get strapi tranzaction
-            const strapiID = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
+            const strapiTransaction = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
                 filters: {
                     invoiceId: id
                 }
             })
 
             //change strapi status to platit
-            await strapi.entityService.update('api::tranzactii.tranzactii', strapiID[0].id, {
+            await strapi.entityService.update('api::tranzactii.tranzactii', strapiTransaction[0].id, {
                 data: {
                     status: 'platit',
                 },
             });
-            const res = await sendOrderEmail(strapiID[0])
+            const res = await sendOrderEmail(strapiTransaction[0])
             console.log(res);
             ctx.redirect('https://client-nine-roan.vercel.app/comanda-a-fost-confirmata');
         } else {
-            const strapiID = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
+            const strapiTransaction = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
                 filters: {
                     invoiceId: id
                 }
             })
-            await strapi.entityService.delete('api::tranzactii.tranzactii', strapiID[0].id)
+            await strapi.entityService.delete('api::tranzactii.tranzactii', strapiTransaction[0].id)
             ctx.redirect('https://client-nine-roan.vercel.app/comanda-nu-a-fost-confirmata');
         }
     }
