@@ -207,7 +207,7 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
             });
             const res = await sendOrderEmail(strapiTransaction[0])
             console.log(res);
-            ctx.redirect('https://client-nine-roan.vercel.app/comanda-a-fost-confirmata');
+            ctx.redirect('https://deseosweets.ro/comanda-a-fost-confirmata');
         } else {
             const strapiTransaction = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
                 filters: {
@@ -215,7 +215,7 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                 }
             })
             await strapi.entityService.delete('api::tranzactii.tranzactii', strapiTransaction[0].id)
-            ctx.redirect('https://client-nine-roan.vercel.app/comanda-nu-a-fost-confirmata');
+            ctx.redirect('https://deseosweets.ro/comanda-nu-a-fost-confirmata');
         }
     }
 }));
