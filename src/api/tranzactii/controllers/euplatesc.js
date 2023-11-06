@@ -92,8 +92,8 @@ async function sendOrderEmail(tranzactie) {
 }
 function removeDiacriticsAndUppercase(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-  }
-  
+}
+
 
 module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
     async create(ctx) {
@@ -109,46 +109,71 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
             })
 
             // Get req body
-            const { amount, currency, orderDescription, lname, fname, company, phone, email, dataRidicare } = ctx.request.body;
-            const orderEuPlatesc = orderDescription.produse.map((produs) => {
-                return `${produs.cantitate}x${removeDiacriticsAndUppercase(produs.nume)}`
-            }).join(', ')
+            const { amount, currency, orderDescription, discount, inputedDiscountCode, lname, fname, company, phone, email, dataRidicare } = await ctx.request.body;
+            if (orderDescription.produse.length) {
+                let dbProductAmount = 0;
+                const promises = orderDescription.produse.map(async (produs) => {
+                    const res = await strapi.entityService.findOne('api::produs.produs', produs.id);
+                    if (res) {
+                        dbProductAmount += res.pret * produs.cantitate;
+                    }
+                });
+                // Wait for all the promises from the map to complete
+                await Promise.all(promises);
 
-            // Generate EuPlatesc paymentURL
-            const paymentUrl = await epClient.paymentUrl({
-                amount,
-                currency,
-                invoiceId: `${formattedDate + todayRecords.length}`,
-                orderDescription:orderEuPlatesc,
-                billingFirstName: fname,
-                billingLastName: lname,
-                billingCompany: company,
-                billingPhone: phone,
-                billingEmail: email,
-                successUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
-                backToSite: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
-                backToSiteMethod: 'POST',
-                failedUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`
-            });
-
-            // Create Strapi Trazaction
-            await strapi.entityService.create('api::tranzactii.tranzactii', {
-                data: {
-                    amount,
-                    currency,
-                    invoiceId: `${formattedDate + todayRecords.length}`,
-                    fname,
-                    lname,
-                    company,
-                    phone,
-                    email,
-                    produse: orderDescription,
-                    paymentUrl: paymentUrl.paymentUrl,
-                    dataRidicare
+                // Apply the discount after all the promises have resolved
+                if (discount && inputedDiscountCode !== "") {
+                    const res = await strapi.entityService.findMany('api::coduri-discount.coduri-discount', {
+                        filters: {
+                            cod: inputedDiscountCode
+                        }
+                    })
+                    if (res[0].procent) {
+                        dbProductAmount *= (1 - (res[0].procent / 100));
+                    }
                 }
-            })
 
-            ctx.send(paymentUrl.paymentUrl);
+                if (dbProductAmount === amount) {
+                    const orderEuPlatesc = orderDescription.produse.map((produs) => {
+                        return `${produs.cantitate}x${removeDiacriticsAndUppercase(produs.nume)}`
+                    }).join(', ')
+
+                    // Generate EuPlatesc paymentURL
+                    const paymentUrl = await epClient.paymentUrl({
+                        amount,
+                        currency,
+                        invoiceId: `${formattedDate + todayRecords.length}`,
+                        orderDescription: orderEuPlatesc,
+                        billingFirstName: fname,
+                        billingLastName: lname,
+                        billingCompany: company,
+                        billingPhone: phone,
+                        billingEmail: email,
+                        successUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
+                        backToSite: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
+                        backToSiteMethod: 'POST',
+                        failedUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`
+                    });
+
+                    // Create Strapi Trazaction
+                    await strapi.entityService.create('api::tranzactii.tranzactii', {
+                        data: {
+                            amount,
+                            currency,
+                            invoiceId: `${formattedDate + todayRecords.length}`,
+                            fname,
+                            lname,
+                            company,
+                            phone,
+                            email,
+                            produse: orderDescription,
+                            paymentUrl: paymentUrl.paymentUrl,
+                            dataRidicare
+                        }
+                    })
+                    ctx.send(paymentUrl.paymentUrl);
+                }
+            }
         } catch (error) {
             console.error('Error:', error);
             ctx.status = 500;
