@@ -1,0 +1,50 @@
+{
+  "kind": "singleType",
+  "collectionName": "cozonaci_sezons",
+  "info": {
+    "singularName": "cozonaci-sezon",
+    "pluralName": "cozonaci-sezons",
+    "displayName": "CozonaciSezon",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "activ": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "header": {
+      "type": "string",
+      "required": true
+    },
+    "pozaCover": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "pozaCoverUrl": {
+      "type": "string",
+      "required": true
+    },
+    "produse": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::produs.produs"
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "endDate": {
+      "type": "date",
+      "required": true
+    }
+  }
+}
