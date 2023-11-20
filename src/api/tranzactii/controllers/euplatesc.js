@@ -87,6 +87,7 @@ async function sendOrderEmail(tranzactie) {
             }
         ]
     })
+    
 
     return res
 }
@@ -244,3 +245,24 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
         }
     }
 }));
+
+
+
+
+
+
+
+
+// const res = await mail.send({
+//     from: 'Comenzi Deseo Sweets <noreply@deseosweets.ro>',
+//     replyTo: 'contact@deseosweets.ro',
+//     templateId: "d-03008af234f94ab68e168410e2165acf",
+//     personalizations: [
+//         {
+//             to: 'contact@deseosweets.ro',
+//             dynamicTemplateData: {
+//                 notificare: productListHTML,
+//             }
+//         }
+//     ]
+// })

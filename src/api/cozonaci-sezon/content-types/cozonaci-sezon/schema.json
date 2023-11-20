@@ -45,6 +45,58 @@
     "endDate": {
       "type": "date",
       "required": true
+    },
+    "blocheazaZiua20": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "blocheazaZiua21": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "blocheazaZiua22": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "blocheazaZiua23": {
+      "type": "boolean",
+      "required": true,
+      "default": false
+    },
+    "blocheazaZiua24": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "cantiateZiua20": {
+      "type": "integer",
+      "required": true
+    },
+    "cantitateZiua21": {
+      "type": "integer",
+      "required": true
+    },
+    "cantitateZiua22": {
+      "type": "integer",
+      "required": true
+    },
+    "cantitateZiua23": {
+      "type": "integer",
+      "required": true
+    },
+    "cantitateZiua24": {
+      "type": "integer",
+      "required": true
+    },
+    "headerTwo": {
+      "type": "string",
+      "required": false
+    },
+    "perioada": {
+      "type": "string"
     }
   }
 }
