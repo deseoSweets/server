@@ -2,6 +2,7 @@
 require('dotenv').config();
 const { EuPlatesc } = require('euplatesc');
 const mail = require('@sendgrid/mail');
+const axios = require('axios')
 
 const epClient = new EuPlatesc({
     merchantId: process.env.EUPLATESC_MERCHANT_ID,
@@ -87,7 +88,7 @@ async function sendOrderEmail(tranzactie) {
             }
         ]
     })
-    
+
 
     return res
 }
@@ -110,7 +111,29 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
             })
 
             // Get req body
-            const { amount, currency, orderDescription, discount, inputedDiscountCode, lname, fname, company, phone, email, dataRidicare } = await ctx.request.body;
+            const { amount, currency, orderDescription, discount, inputedDiscountCode, lname, fname, company, phone, email, dataRidicare, oras, judet, tara, adresa } = await ctx.request.body;
+
+
+            // 
+            // console.log(cantitateCozonaci)
+
+
+            // let data = {}
+            // if(cantitateCozonaci) {
+
+            // }
+            // const updateCozonaciSezon = await strapi.entityService.update('api::cozonaci-sezon.cozonaci-sezon', 1, {
+            //     data: {
+            //         cantiateZiua20: +1
+            //     }
+            // })
+            // console.log(cantitateCozonac)
+            // console.log(ziRidicare)
+
+
+
+
+
             if (orderDescription.produse.length) {
                 let dbProductAmount = 0;
                 const promises = orderDescription.produse.map(async (produs) => {
@@ -139,6 +162,8 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                         return `${produs.cantitate}x${removeDiacriticsAndUppercase(produs.nume)}`
                     }).join(', ')
 
+
+
                     // Generate EuPlatesc paymentURL
                     const paymentUrl = await epClient.paymentUrl({
                         amount,
@@ -166,12 +191,17 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                             lname,
                             company,
                             phone,
+                            oras,
+                            judet,
+                            tara,
+                            adresa,
                             email,
                             produse: orderDescription,
                             paymentUrl: paymentUrl.paymentUrl,
                             dataRidicare
                         }
                     })
+
                     ctx.send(paymentUrl.paymentUrl);
                 }
             }
@@ -231,8 +261,289 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                     status: 'platit',
                 },
             });
+            const now = new Date();
+            // Convert to Bucharest time zone
+            const bucharestTime = new Intl.DateTimeFormat('en-GB', {
+                timeZone: 'Europe/Bucharest',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).format(now);
+
+            const bucharestDate = bucharestTime.split('/').reverse().join('-');
+
+            const produseSmartbill = strapiTransaction[0].produse.produse.map((produs) => {
+                return {
+                    "name": `${produs.nume}`,
+                    "isDiscount": false,
+                    "measuringUnitName": "buc",
+                    "currency": "RON",
+                    "quantity": produs.cantitate,
+                    "price": produs.pret,
+                    "isTaxIncluded": true,
+                    "saveToDb": false,
+                    "isService": false
+                }
+            })
+            const smartbillUsername = 'admin@deseosweets.ro'
+            const smartbillPassword = '002|ace37491865b27d3d4c7baad3594bce2'
+            const basicAuth = 'Basic ' + Buffer.from(smartbillUsername + ':' + smartbillPassword).toString('base64')
+            const smartbillData = {
+                "companyVatCode": "46403540",
+                "client": {
+                    "name": `${strapiTransaction[0].fname} ${strapiTransaction[0].lname} `,
+                    "vatCode": `${strapiTransaction[0].company}`,
+                    "address": `${strapiTransaction[0].adresa}, ${strapiTransaction[0].judet}`,
+                    "city": `${strapiTransaction[0].oras}`,
+                    "country": `${strapiTransaction[0].tara}`,
+                    "email": `${strapiTransaction[0].email}`,
+                    "saveToDb": true
+                },
+                "issueDate": bucharestDate,
+                "seriesName": "WEB",
+                "sendEmail": false,
+                "dueDate": bucharestDate,
+                "deliveryDate": bucharestDate,
+                "products": produseSmartbill
+            }
+            axios.post('https://ws.smartbill.ro/SBORO/api/invoice', smartbillData, {
+                headers: {
+                    'Authorization': basicAuth,
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    console.log('Data:', response.data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            if (strapiTransaction[0].produse.ziRidicare) {
+                const cantitateCozonaci = await strapi.entityService.findOne('api::cozonaci-sezon.cozonaci-sezon', 1)
+                let cantitateCozonac = 0
+                strapiTransaction[0].produse.produse.map((produs) => {
+                    cantitateCozonac = cantitateCozonac + produs.cantitate
+                })
+                let data = {}
+                if (strapiTransaction[0].produse.ziRidicare == 20) {
+                    data = {
+                        cantitateZiua20: cantitateCozonaci.cantitateZiua20 + cantitateCozonac
+                    }
+                    strapiTransaction[0].produse.produse.map(async (produs) => {
+                        if (produs.id === 21) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 1)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 1, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 34) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 2)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 2, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 36) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 3)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 3, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 35) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 4)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 4, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 20) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 5)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 5, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+
+                    })
+                }
+                if (strapiTransaction[0].produse.ziRidicare == 21) {
+                    data = {
+                        cantitateZiua21: cantitateCozonaci.cantitateZiua21 + cantitateCozonac
+                    }
+                    strapiTransaction[0].produse.produse.map(async (produs) => {
+                        if (produs.id === 21) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 6)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 6, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 34) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 7)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 7, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 36) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 8)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 8, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 35) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 9)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 9, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 20) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 10)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 10, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+
+                    })
+                }
+                if (strapiTransaction[0].produse.ziRidicare == 22) {
+                    data = {
+                        cantitateZiua22: cantitateCozonaci.cantitateZiua22 + cantitateCozonac
+                    }
+                    strapiTransaction[0].produse.produse.map(async (produs) => {
+                        if (produs.id === 21) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 11)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 11, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 34) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 12)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 12, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 36) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 13)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 13, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 35) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 14)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 14, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 20) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 15)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 15, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+
+                    })
+                }
+                if (strapiTransaction[0].produse.ziRidicare == 23) {
+                    data = {
+                        cantitateZiua23: cantitateCozonaci.cantitateZiua23 + cantitateCozonac
+                    }
+                    strapiTransaction[0].produse.produse.map(async (produs) => {
+                        if (produs.id === 21) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 16)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 16, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 34) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 17)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 17, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 36) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 18)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 18, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 35) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 19)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 19, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 20) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 20)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 20, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                    })
+                }
+                if (strapiTransaction[0].produse.ziRidicare == 24) {
+                    data = {
+                        cantitateZiua24: cantitateCozonaci.cantitateZiua24 + cantitateCozonac
+                    }
+                    strapiTransaction[0].produse.produse.map(async (produs) => {
+                        if (produs.id === 21) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 21)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 21, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 34) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 22)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 22, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 36) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 23)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 23, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 35) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 24)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 24, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                        if (produs.id === 20) {
+                            const numarCoz = await strapi.entityService.findOne('api::comenzi-cozonaci.comenzi-cozonaci', 25)
+                            const updateCozonaciSezon = await strapi.entityService.update('api::comenzi-cozonaci.comenzi-cozonaci', 25, { data: { cantitate: numarCoz.cantitate + produs.cantitate } })
+                            if (!updateCozonaciSezon) {
+                                ctx.throw('400', "Unable to update ComenziCozonac")
+                            }
+                        }
+                    })
+                }
+                const updateCozonaciSezon = await strapi.entityService.update('api::cozonaci-sezon.cozonaci-sezon', 1, { data })
+                if (!updateCozonaciSezon) {
+                    ctx.throw(400, "Unable to update CozonaciSingleType")
+                }
+            }
             const res = await sendOrderEmail(strapiTransaction[0])
-            console.log(res);
             ctx.redirect('https://deseosweets.ro/comanda-a-fost-confirmata');
         } else {
             const strapiTransaction = await strapi.entityService.findMany('api::tranzactii.tranzactii', {
@@ -245,12 +556,6 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
         }
     }
 }));
-
-
-
-
-
-
 
 
 // const res = await mail.send({

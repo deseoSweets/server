@@ -69,6 +69,20 @@
       "type": "boolean",
       "default": false,
       "required": true
+    },
+    "adresa": {
+      "type": "text",
+      "required": false
+    },
+    "oras": {
+      "type": "string",
+      "required": false
+    },
+    "tara": {
+      "type": "string"
+    },
+    "judet": {
+      "type": "string"
     }
   }
 }

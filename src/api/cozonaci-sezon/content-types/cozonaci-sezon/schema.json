@@ -71,7 +71,7 @@
       "default": false,
       "required": true
     },
-    "cantiateZiua20": {
+    "cantitateZiua20": {
       "type": "integer",
       "required": true
     },
