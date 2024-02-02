@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comenzi_torturis",
+  "info": {
+    "singularName": "comenzi-torturi",
+    "pluralName": "comenzi-torturis",
+    "displayName": "Comenzi Torturi"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "telefon": {
+      "type": "string",
+      "required": true
+    },
+    "tort": {
+      "type": "json",
+      "required": true
+    }
+  }
+}

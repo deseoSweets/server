@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_reusable_design_torts",
+  "info": {
+    "displayName": "designTort",
+    "icon": "picture",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "poza": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "pozaUrl": {
+      "type": "string",
+      "required": true
+    },
+    "denumire": {
+      "type": "string",
+      "required": false
+    }
+  }
+}

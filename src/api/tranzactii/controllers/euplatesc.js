@@ -113,27 +113,6 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
             // Get req body
             const { amount, currency, orderDescription, discount, inputedDiscountCode, lname, fname, company, phone, email, dataRidicare, oras, judet, tara, adresa } = await ctx.request.body;
 
-
-            // 
-            // console.log(cantitateCozonaci)
-
-
-            // let data = {}
-            // if(cantitateCozonaci) {
-
-            // }
-            // const updateCozonaciSezon = await strapi.entityService.update('api::cozonaci-sezon.cozonaci-sezon', 1, {
-            //     data: {
-            //         cantiateZiua20: +1
-            //     }
-            // })
-            // console.log(cantitateCozonac)
-            // console.log(ziRidicare)
-
-
-
-
-
             if (orderDescription.produse.length) {
                 let dbProductAmount = 0;
                 const promises = orderDescription.produse.map(async (produs) => {
@@ -556,18 +535,3 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
         }
     }
 }));
-
-
-// const res = await mail.send({
-//     from: 'Comenzi Deseo Sweets <noreply@deseosweets.ro>',
-//     replyTo: 'contact@deseosweets.ro',
-//     templateId: "d-03008af234f94ab68e168410e2165acf",
-//     personalizations: [
-//         {
-//             to: 'contact@deseosweets.ro',
-//             dynamicTemplateData: {
-//                 notificare: productListHTML,
-//             }
-//         }
-//     ]
-// })

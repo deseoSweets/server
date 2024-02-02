@@ -30,6 +30,12 @@
       "type": "component",
       "repeatable": true,
       "component": "tort.insertii"
+    },
+    "designTort": {
+      "displayName": "designTort",
+      "type": "component",
+      "repeatable": true,
+      "component": "reusable.design-tort"
     }
   }
 }
