@@ -7,8 +7,6 @@ module.exports = {
 
     async afterCreate(event) {
         const { result, params } = event;
-
-        console.log(result)
         const HTML = `
         <table style="width: 100%; font-family: Arial, sans-serif; padding: 20px; box-sizing: border-box; border-collapse: collapse;">
         <tr>
@@ -32,9 +30,10 @@ module.exports = {
             <td style="padding: 10px; font-size: 16px;">${result.tort.comentariu}</td>
         </tr>
         <tr>
-            <td colspan="2" style="padding: 10px; text-align: center;">
-                <span style="font-size: 16px; font-weight: bold;">${result.tort.designAles}</span><br>
-                <img style="width: 200px; height: 200px; padding: 10px; box-sizing: border-box;" src="${result.tort.designAlesUrl}" alt="designTort" />
+        <td style="padding: 10px; font-size: 16px; font-weight: bold;">Model: </td>
+            <td style="padding: 10px; font-size: 16px;">
+            <span>${result.tort.designAles}</span>
+            <a href="${result.tort.designAlesUrl}">Click pt poza</a>
             </td>
         </tr>
         <tr>
