@@ -4,7 +4,8 @@
   "info": {
     "singularName": "comenzi-torturi",
     "pluralName": "comenzi-torturis",
-    "displayName": "Comenzi Torturi"
+    "displayName": "Comenzi Torturi",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -21,6 +22,14 @@
     },
     "tort": {
       "type": "json",
+      "required": true
+    },
+    "nume": {
+      "type": "string",
+      "required": true
+    },
+    "prenume": {
+      "type": "string",
       "required": true
     }
   }

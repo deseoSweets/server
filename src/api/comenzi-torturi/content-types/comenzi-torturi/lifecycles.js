@@ -52,12 +52,14 @@ module.exports = {
                 personalizations: [
                     {
                         to: `${sendToCristina}`,
+                        // subject:`Comanda tort - ${result.nume} ${result.prenume}`,
                         dynamicTemplateData: {
                             nume:result.nume,
                             prenume: result.prenume,
                             email: result.email,
                             telefon: result.telefon,
-                            infotort: HTML
+                            infotort: HTML,
+                            dynamicSubject:`Comanda tort - ${result.nume} ${result.prenume}`
                         }
                     }
                 ]
