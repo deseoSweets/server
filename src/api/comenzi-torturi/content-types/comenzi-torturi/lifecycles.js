@@ -53,6 +53,8 @@ module.exports = {
                     {
                         to: `${sendToCristina}`,
                         dynamicTemplateData: {
+                            nume:result.nume,
+                            prenume: result.prenume,
                             email: result.email,
                             telefon: result.telefon,
                             infotort: HTML
