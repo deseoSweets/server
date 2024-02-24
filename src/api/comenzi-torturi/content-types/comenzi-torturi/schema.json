@@ -14,7 +14,7 @@
   "attributes": {
     "email": {
       "type": "email",
-      "required": true
+      "required": false
     },
     "telefon": {
       "type": "string",
