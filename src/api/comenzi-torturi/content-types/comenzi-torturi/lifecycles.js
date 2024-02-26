@@ -87,6 +87,7 @@ module.exports = {
                             prenume: result.prenume,
                             email: result.email,
                             telefon: result.telefon,
+                            dataRidicare: result.tort.dataRidicare,
                             infotort: HTML,
                             dynamicSubject: `Comanda tort - ${result.nume} ${result.prenume}`
                         }
