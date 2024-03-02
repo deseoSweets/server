@@ -8,7 +8,7 @@ module.exports = {
     async afterCreate(event) {
         const { result, params } = event;
 
-        const modelAlesLink = result.tort.modelAles !== "Personalizat"? `<a href="${result.tort.modelAlesUrl}">Click pt poza</a>` : ""
+        const modelAlesLink = result.tort.modelAles !== "Personalizat"? `<a href="${result.tort.modelAlesUrl}">Click pentru vizualizare</a>` : ""
         const HTML = `
                  <table style="width: 100%; font-family: Arial, sans-serif; padding: 20px; box-sizing: border-box; border-collapse: collapse;">
                  <tr>
