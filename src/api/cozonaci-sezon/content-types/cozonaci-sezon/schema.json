@@ -97,6 +97,78 @@
     },
     "perioada": {
       "type": "string"
+    },
+    "fundalCozonaciHomepage1": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl1": {
+      "type": "string",
+      "required": true
+    },
+    "fundalCozonaciHomepage2": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl2": {
+      "type": "string",
+      "required": true
+    },
+    "fundalCozonaciHomepage3": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl3": {
+      "type": "string",
+      "required": true
+    },
+    "fundalCozonaciHomepage4": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl4": {
+      "type": "string",
+      "required": true
+    },
+    "fundalCozonaciHomepage5": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl5": {
+      "type": "string",
+      "required": true
+    },
+    "fundalCozonaciHomepage6": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "fundalCozonaciHomepageUrl6": {
+      "type": "string",
+      "required": true
     }
   }
 }
