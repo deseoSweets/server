@@ -46,51 +46,6 @@
       "type": "date",
       "required": true
     },
-    "blocheazaZiua20": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "blocheazaZiua21": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "blocheazaZiua22": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "blocheazaZiua23": {
-      "type": "boolean",
-      "required": true,
-      "default": false
-    },
-    "blocheazaZiua24": {
-      "type": "boolean",
-      "default": false,
-      "required": true
-    },
-    "cantitateZiua20": {
-      "type": "integer",
-      "required": true
-    },
-    "cantitateZiua21": {
-      "type": "integer",
-      "required": true
-    },
-    "cantitateZiua22": {
-      "type": "integer",
-      "required": true
-    },
-    "cantitateZiua23": {
-      "type": "integer",
-      "required": true
-    },
-    "cantitateZiua24": {
-      "type": "integer",
-      "required": true
-    },
     "headerTwo": {
       "type": "string",
       "required": false
@@ -99,72 +54,72 @@
       "type": "string"
     },
     "fundalCozonaciHomepage1": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl1": {
       "type": "string",
       "required": true
     },
     "fundalCozonaciHomepage2": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl2": {
       "type": "string",
       "required": true
     },
     "fundalCozonaciHomepage3": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl3": {
       "type": "string",
       "required": true
     },
     "fundalCozonaciHomepage4": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl4": {
       "type": "string",
       "required": true
     },
     "fundalCozonaciHomepage5": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl5": {
       "type": "string",
       "required": true
     },
     "fundalCozonaciHomepage6": {
-      "allowedTypes": [
-        "images"
-      ],
       "type": "media",
       "multiple": false,
-      "required": true
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
     },
     "fundalCozonaciHomepageUrl6": {
       "type": "string",
