@@ -4,11 +4,19 @@ const mail = require('@sendgrid/mail');
 mail.setApiKey(process.env.SENDGRID_API_KEY);
 
 module.exports = {
+    async beforeCreate(event) {
+        const data = event.params.data;
+        if (data.tort.crema2.tip === "Fistic") {
+          data.tort.pret = data.tort.crema2.pret * data.tort.greutate ;
+        } else {
+          data.tort.pret = data.tort.crema.pret * data.tort.greutate ;
+        }  
+    },
 
     async afterCreate(event) {
         const { result, params } = event;
 
-        const modelAlesLink = result.tort.modelAles !== "Personalizat"? `<a href="${result.tort.modelAlesUrl}">Click pentru vizualizare</a>` : ""
+        const modelAlesLink = result.tort.modelAles !== "Personalizat" ? `<a href="${result.tort.modelAlesUrl}">Click pentru vizualizare</a>` : ""
         const HTML = `
                  <table style="width: 100%; font-family: Arial, sans-serif; padding: 20px; box-sizing: border-box; border-collapse: collapse;">
                  <tr>

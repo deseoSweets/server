@@ -81,6 +81,7 @@ async function sendOrderEmail(tranzactie) {
                     date: formatOrderDate(tranzactie.createdAt),
                     clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
                     email: tranzactie.email,
+                    phone:tranzactie.phone,
                     dataRidicare: tranzactie.dataRidicare,
                     produse: productListHTML,
                     amount: tranzactie.amount
@@ -101,6 +102,7 @@ async function sendOrderEmail(tranzactie) {
                     date: formatOrderDate(tranzactie.createdAt),
                     clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
                     email: tranzactie.email,
+                    phone:tranzactie.phone,
                     dataRidicare: tranzactie.dataRidicare,
                     produse: productListHTML,
                     amount: tranzactie.amount

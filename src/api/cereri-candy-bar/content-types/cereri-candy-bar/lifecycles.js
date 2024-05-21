@@ -20,6 +20,18 @@ module.exports = {
                         }
                     ]
                 })
+
+                 // DE IMBUNATATIT - CE I SE TRIMITE CRISTINEI
+                 await mail.send({
+                    from: 'Deseo Sweets <noreply@deseosweets.ro>',
+                    replyTo: 'contact@deseosweets.ro',
+                    templateId: "d-f3a1e32223c74d2bbda7b7ae519a5831",
+                    personalizations: [
+                        {
+                            to: `contact@deseosweets.ro`,
+                        }
+                    ]
+                })
             } catch (error) {
                 console.log(error)
             }
