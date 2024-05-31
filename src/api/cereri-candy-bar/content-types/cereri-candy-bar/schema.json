@@ -35,6 +35,9 @@
     "comentariu": {
       "type": "richtext",
       "required": false
+    },
+    "dataEveniment": {
+      "type": "string"
     }
   }
 }
