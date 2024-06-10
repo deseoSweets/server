@@ -124,6 +124,15 @@
     "fundalCozonaciHomepageUrl6": {
       "type": "string",
       "required": true
+    },
+    "headerEN": {
+      "type": "string"
+    },
+    "headerTwoEN": {
+      "type": "string"
+    },
+    "perioadaEN": {
+      "type": "string"
     }
   }
 }

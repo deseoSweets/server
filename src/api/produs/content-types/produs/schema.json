@@ -83,6 +83,21 @@
     },
     "pretVechi": {
       "type": "float"
+    },
+    "titluEN": {
+      "type": "string"
+    },
+    "ingredienteEN": {
+      "type": "richtext"
+    },
+    "alergeniEN": {
+      "type": "richtext"
+    },
+    "valoriNutritionaleEN": {
+      "type": "richtext"
+    },
+    "mentiuniEN": {
+      "type": "richtext"
     }
   }
 }
