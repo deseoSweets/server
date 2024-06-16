@@ -10,32 +10,56 @@
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
     "Blat": {
       "displayName": "Blaturi",
       "type": "component",
       "repeatable": true,
       "component": "tort.blaturi",
-      "required": true
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "Creme": {
       "displayName": "Creme",
       "type": "component",
       "repeatable": true,
-      "component": "tort.creme"
+      "component": "tort.creme",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "Insertii": {
       "displayName": "Insertii",
       "type": "component",
       "repeatable": true,
-      "component": "tort.insertii"
+      "component": "tort.insertii",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
     "designTort": {
       "displayName": "designTort",
       "type": "component",
       "repeatable": true,
-      "component": "reusable.design-tort"
+      "component": "reusable.design-tort",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }
