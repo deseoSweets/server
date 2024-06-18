@@ -50,7 +50,7 @@
         }
       }
     },
-    "slug1": {
+    "slugNou": {
       "pluginOptions": {
         "i18n": {
           "localized": true
