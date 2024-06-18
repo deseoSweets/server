@@ -50,10 +50,13 @@
         }
       }
     },
-    "slug": {
-      "type": "uid",
-      "required": true,
-      "targetField": "titlu"
+    "slug1": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
     },
     "imagine1Url": {
       "type": "string",
