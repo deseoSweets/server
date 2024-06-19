@@ -190,6 +190,22 @@
           "localized": true
         }
       }
+    },
+    "productTag": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "type": "string"
+    },
+    "slug": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "uid"
     }
   }
 }
