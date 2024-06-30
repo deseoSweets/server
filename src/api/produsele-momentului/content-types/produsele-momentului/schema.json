@@ -4,12 +4,17 @@
   "info": {
     "singularName": "produsele-momentului",
     "pluralName": "produsele-momentuluis",
-    "displayName": "Produsele Momentului"
+    "displayName": "Produsele Momentului",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
     "produse": {
       "type": "relation",

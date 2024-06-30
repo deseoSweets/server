@@ -18,9 +18,6 @@
     "hex": {
       "type": "string",
       "required": true
-    },
-    "tipEN": {
-      "type": "string"
     }
   }
 }

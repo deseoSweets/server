@@ -4,12 +4,17 @@
   "info": {
     "singularName": "ordine-categorii",
     "pluralName": "ordine-categoriis",
-    "displayName": "OrdineCategorii"
+    "displayName": "OrdineCategorii",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
   "attributes": {
     "ordineCategorii": {
       "type": "relation",
