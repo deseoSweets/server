@@ -292,7 +292,7 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
             const smartbillPassword = '002|ace37491865b27d3d4c7baad3594bce2'
             const basicAuth = 'Basic ' + Buffer.from(smartbillUsername + ':' + smartbillPassword).toString('base64')
             const smartbillData = {
-                "companyVatCode": "46403540",
+                "companyVatCode": "RO46403540",
                 "client": {
                     "name": `${strapiTransaction[0].fname} ${strapiTransaction[0].lname} `,
                     "vatCode": `${strapiTransaction[0].company}`,
