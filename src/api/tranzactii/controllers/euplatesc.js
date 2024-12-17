@@ -288,6 +288,7 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                     "isService": false
                 }
             })
+            // smartbill auth
             const smartbillUsername = 'admin@deseosweets.ro'
             const smartbillPassword = '002|ace37491865b27d3d4c7baad3594bce2'
             const basicAuth = 'Basic ' + Buffer.from(smartbillUsername + ':' + smartbillPassword).toString('base64')
