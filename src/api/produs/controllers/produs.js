@@ -20,7 +20,7 @@ module.exports = createCoreController('api::produs.produs', ({strapi}) => ({
       const product = await strapi.entityService.findMany('api::produs.produs', {
         filters: { slug },
         locale,
-        populate: ['localizations'],
+        populate: ['localizations','SEO'],
       });
 
       if (!product || product.length === 0) {
