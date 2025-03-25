@@ -10,42 +10,35 @@ module.exports = createCoreController('api::produs.produs', ({strapi}) => ({
   async getProduseLocale(ctx) {
     try {
       const { slug } = ctx.params;
-      const { locale } = ctx.query; // Expecting 'en' or 'ro'
+      const { locale } = ctx.query;
 
-      if (!locale || (locale !== 'en' && locale !== 'ro')) {
-        return ctx.badRequest('Invalid or missing locale');
+      if (!locale) {
+        return ctx.badRequest('Missing locale');
       }
 
       // Fetch product in the requested locale
-      const product = await strapi.entityService.findMany('api::produs.produs', {
+      const products = await strapi.entityService.findMany('api::produs.produs', {
         filters: { slug },
         locale,
-        populate: ['localizations','SEO'],
+        populate: ['localizations', 'SEO'],
       });
 
-      if (!product || product.length === 0) {
+      if (!products || products.length === 0) {
         return ctx.notFound('Product not found');
       }
 
-      const foundProduct = product[0];
+      const product = products[0];
 
-      // Find the opposite locale (assuming only RO and EN are used)
-      const oppositeLocale = locale === 'ro' ? 'en' : 'ro';
-
-      // Extract the opposite localization from `localizations`
-      const opposite = foundProduct.localizations.find(
-        (loc) => loc.locale === oppositeLocale
-      );
-
-      const localizedInfo = {
-        locale: opposite?.locale || null,
-        slug: opposite?.slug || null,
-      };
+      // Map localizations into { locale, slug }
+      const localizations = (product.localizations || []).map((loc) => ({
+        locale: loc.locale,
+        slug: loc.slug,
+      }));
 
       return ctx.send({
         product: {
-          ...foundProduct,
-          localizations: localizedInfo,
+          ...product,
+          localizations,
         },
       });
 
