@@ -176,10 +176,10 @@ module.exports = createCoreController('api::tranzactii.tranzactii', () => ({
                         billingCompany: company,
                         billingPhone: phone,
                         billingEmail: email,
-                        successUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
+                        successUrl: `https://deseosweets.ro/comanda-a-fost-confirmata`,
                         backToSite: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
                         backToSiteMethod: 'POST',
-                        failedUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`
+                        failedUrl: `https://deseosweets.ro/comanda-nu-a-fost-confirmata`
                     });
 
                     // Create Strapi Trazaction
