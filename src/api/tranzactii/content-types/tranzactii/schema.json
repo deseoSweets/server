@@ -22,7 +22,7 @@
     },
     "invoiceId": {
       "type": "uid",
-      "required": true
+      "required": false
     },
     "fname": {
       "type": "string",
