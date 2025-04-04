@@ -174,6 +174,22 @@
         }
       },
       "type": "boolean"
+    },
+    "taxName": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "string"
+    },
+    "taxPercentage": {
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "type": "decimal"
     }
   }
 }
