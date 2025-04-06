@@ -16,20 +16,20 @@ mail.setApiKey(process.env.SENDGRID_API_KEY);
 const { createCoreController } = require("@strapi/strapi").factories;
 
 function getTodayDateRange() {
-    // Always use the Bucharest timezone
-    const now = DateTime.now().setZone("Europe/Bucharest");
-  
-    const startOfDay = now.startOf("day").toISO(); // ISO string with +03:00
-    const endOfDay = now.endOf("day").toISO();
-  
-    const formattedDate = now.toFormat("yyLLdd"); // e.g. "250330"
-  
-    return {
-      startOfDay,     // string like "2025-03-30T00:00:00.000+03:00"
-      endOfDay,       // string like "2025-03-30T23:59:59.999+03:00"
-      formattedDate
-    };
-  }
+  // Always use the Bucharest timezone
+  const now = DateTime.now().setZone("Europe/Bucharest");
+
+  const startOfDay = now.startOf("day").toISO(); // ISO string with +03:00
+  const endOfDay = now.endOf("day").toISO();
+
+  const formattedDate = now.toFormat("yyLLdd"); // e.g. "250330"
+
+  return {
+    startOfDay, // string like "2025-03-30T00:00:00.000+03:00"
+    endOfDay, // string like "2025-03-30T23:59:59.999+03:00"
+    formattedDate,
+  };
+}
 
 function formatOrderDate(dateStr) {
   const dateObj = new Date(dateStr);
@@ -134,26 +134,25 @@ function removeDiacriticsAndUppercase(str) {
 
 module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
   async create(ctx) {
-      const {
-        amount,
-        currency,
-        orderDescription,
-        discount,
-        inputedDiscountCode,
-        lname,
-        fname,
-        company,
-        phone,
-        email,
-        dataRidicare,
-        oras,
-        judet,
-        tara,
-        adresa,
-      } = await ctx.request.body;
-   
-    try {
+    const {
+      amount,
+      currency,
+      orderDescription,
+      discount,
+      inputedDiscountCode,
+      lname,
+      fname,
+      company,
+      phone,
+      email,
+      dataRidicare,
+      oras,
+      judet,
+      tara,
+      adresa,
+    } = await ctx.request.body;
 
+    try {
       if (orderDescription.produse.length) {
         let dbProductAmount = 0;
         const promises = orderDescription.produse.map(async (produs) => {
@@ -163,10 +162,13 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
           );
           if (res) {
             dbProductAmount += res.pret * produs.cantitate;
+            // Add tax info to each product
+            produs.taxName = res.taxName;
+            produs.taxPercentage = res.taxPercentage;
           }
         });
         await Promise.all(promises);
-
+       
         // Apply the discount after all the promises have resolved
 
         if (discount && inputedDiscountCode !== "") {
@@ -183,9 +185,8 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
           }
         }
 
-        
-        if (dbProductAmount === amount) {
 
+        if (dbProductAmount === amount) {
           const orderEuPlatesc = orderDescription.produse
             .map((produs) => {
               return `${produs.cantitate}x${removeDiacriticsAndUppercase(
@@ -204,16 +205,15 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
                   $gte: startOfDay,
                   $lte: endOfDay,
                 },
-                status: ["platit"]
               },
             }
           );
-       
+
           const paymentUrl = await epClient.paymentUrl({
             amount,
             currency,
             orderDescription: orderEuPlatesc,
-            invoiceId:`${formattedDate + (todayRecords.length+1)}`,
+            invoiceId: `${formattedDate + (todayRecords.length + 1)}`,
             billingFirstName: fname,
             billingLastName: lname,
             billingCompany: company,
@@ -224,13 +224,12 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
             backToSiteMethod: "POST",
             failedUrl: `https://deseo-f115ed0b1de4.herokuapp.com/api/tranzactii/euplatesc/raspuns`,
           });
-        
           // Create Strapi Trazaction
           await strapi.entityService.create("api::tranzactii.tranzactii", {
             data: {
               amount,
               currency,
-              invoiceId:`${formattedDate + (todayRecords.length+1)}`,
+              invoiceId: `${formattedDate + (todayRecords.length + 1)}`,
               lname,
               fname,
               company,
@@ -257,7 +256,6 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
   },
 
   async raspuns(ctx) {
-
     const {
       amount,
       curr,
@@ -322,10 +320,9 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
 
       const res = await sendOrderEmail(strapiTransaction[0]);
 
-      ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
+     
 
       // Smartbill
-      return
       const produseSmartbill = strapiTransaction[0].produse.produse.map(
         (produs) => {
           return {
@@ -336,6 +333,8 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
             quantity: produs.cantitate,
             price: produs.pret,
             isTaxIncluded: true,
+            taxName: produs.taxName,
+            taxPercentage: produs.taxPercentage,
             saveToDb: false,
             isService: false,
           };
@@ -380,8 +379,6 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
         .catch((error) => {
           console.error("Error:", error);
         });
-
-     
     } else {
       const strapiTransaction = await strapi.entityService.findMany(
         "api::tranzactii.tranzactii",
