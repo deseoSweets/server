@@ -374,11 +374,12 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
           },
         })
         .then((response) => {
-          console.log("Data:", response.data);
+          ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
         })
         .catch((error) => {
           console.error("Error:", error);
         });
+        
     } else {
       const strapiTransaction = await strapi.entityService.findMany(
         "api::tranzactii.tranzactii",
