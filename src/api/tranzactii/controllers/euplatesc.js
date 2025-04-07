@@ -168,7 +168,7 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
           }
         });
         await Promise.all(promises);
-       
+
         // Apply the discount after all the promises have resolved
 
         if (discount && inputedDiscountCode !== "") {
@@ -184,7 +184,6 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
             dbProductAmount *= 1 - res[0].procent / 100;
           }
         }
-
 
         if (dbProductAmount === amount) {
           const orderEuPlatesc = orderDescription.produse
@@ -298,15 +297,7 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
       );
 
       //change strapi status to platit
-      await strapi.entityService.update(
-        "api::tranzactii.tranzactii",
-        strapiTransaction[0].id,
-        {
-          data: {
-            status: "platit",
-          },
-        }
-      );
+
       const now = new Date();
       // Convert to Bucharest time zone
       const bucharestTime = new Intl.DateTimeFormat("en-GB", {
@@ -317,10 +308,9 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
       }).format(now);
 
       const bucharestDate = bucharestTime.split("/").reverse().join("-");
-
-      const res = await sendOrderEmail(strapiTransaction[0]);
-
-     
+      if (strapiTransaction[0].validata === true) {
+        ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
+      }
 
       // Smartbill
       const produseSmartbill = strapiTransaction[0].produse.produse.map(
@@ -366,20 +356,35 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
         deliveryDate: bucharestDate,
         products: produseSmartbill,
       };
-      axios
-        .post("https://ws.smartbill.ro/SBORO/api/invoice", smartbillData, {
-          headers: {
-            Authorization: basicAuth,
-            "Content-Type": "application/json",
+
+      await strapi.entityService.update(
+        "api::tranzactii.tranzactii",
+        strapiTransaction[0].id,
+        {
+          data: {
+            status: "platit",
+            validata: true,
           },
-        })
-        .then((response) => {
-          ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-        
+        }
+      );
+      if (strapiTransaction[0].validata === false) {
+        const res = await sendOrderEmail(strapiTransaction[0]);
+        axios
+          .post("https://ws.smartbill.ro/SBORO/api/invoice", smartbillData, {
+            headers: {
+              Authorization: basicAuth,
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      } else {
+        ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
+      }
     } else {
       const strapiTransaction = await strapi.entityService.findMany(
         "api::tranzactii.tranzactii",

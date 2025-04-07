@@ -83,6 +83,10 @@
     },
     "judet": {
       "type": "string"
+    },
+    "validata": {
+      "type": "boolean",
+      "default": false
     }
   }
 }
