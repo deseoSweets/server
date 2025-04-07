@@ -385,6 +385,7 @@ module.exports = createCoreController("api::tranzactii.tranzactii", () => ({
       } else {
         ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
       }
+      ctx.redirect("https://deseosweets.ro/comanda-a-fost-confirmata");
     } else {
       const strapiTransaction = await strapi.entityService.findMany(
         "api::tranzactii.tranzactii",
