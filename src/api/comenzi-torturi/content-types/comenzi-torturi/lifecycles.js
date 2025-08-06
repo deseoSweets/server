@@ -69,7 +69,7 @@ module.exports = {
                     To: result.email,
                     TemplateId: 41029921,
                     TemplateModel: {
-                        infotort_Value: HTML,
+                        infotort: HTML,
                     }
                 });
             } catch (error) {
@@ -83,16 +83,14 @@ module.exports = {
                 From: 'Deseo Sweets <noreply@deseosweets.ro>',
                 ReplyTo: 'contact@deseosweets.ro',
                 To: sendToCristina,
-                Subject: `Comanda tort - ${result.nume} ${result.prenume}`,
                 TemplateId: 40986828,
                 TemplateModel: {
-                    dynamicsubject_Value: `Comanda tort - ${result.nume} ${result.prenume}`,
-                    nume_Value: result.nume,
-                    prenume_Value: result.prenume,
-                    email_Value: result.email,
-                    telefon_Value: result.telefon,
-                    dataRidicare_Value: result.tort.dataRidicare,
-                    infotort_Value: HTML,
+                    nume: result.nume,
+                    prenume: result.prenume,
+                    email: result.email,
+                    telefon: result.telefon,
+                    dataRidicare: result.tort.dataRidicare,
+                    infotort: HTML,
                 }
             });
         } catch (error) {
