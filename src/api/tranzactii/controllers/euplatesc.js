@@ -1,7 +1,7 @@
 "use strict";
 require("dotenv").config();
 const { EuPlatesc } = require("euplatesc");
-const mail = require("@sendgrid/mail");
+const postmark = require("postmark");
 const axios = require("axios");
 const { DateTime } = require("luxon");
 
@@ -11,7 +11,7 @@ const epClient = new EuPlatesc({
   testMode: false,
 });
 
-mail.setApiKey(process.env.SENDGRID_API_KEY);
+const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
 const { createCoreController } = require("@strapi/strapi").factories;
 
@@ -79,52 +79,47 @@ async function sendOrderEmail(tranzactie) {
     </table>
   </div>`;
 
-  const res = await mail.send({
-    from: "Comenzi Deseo Sweets <noreply@deseosweets.ro>",
-    replyTo: "contact@deseosweets.ro",
-    templateId: "d-e249b7b12dcc48febaab1e52b67f9d1c",
-    personalizations: [
-      {
-        to: `${tranzactie.email}`,
-        dynamicTemplateData: {
-          invoiceId: tranzactie.invoiceId,
-          date: formatOrderDate(tranzactie.createdAt),
-          clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
-          email: tranzactie.email,
-          phone: tranzactie.phone,
-          dataRidicare: tranzactie.dataRidicare,
-          produse: productListHTML,
-          amount: tranzactie.amount,
-        },
-      },
-    ],
+  const res = await client.sendEmailWithTemplate({
+    From: "Comenzi Deseo Sweets <noreply@deseosweets.ro>",
+    ReplyTo: "contact@deseosweets.ro",
+    To: tranzactie.email,
+    TemplateId: 41029568,
+    TemplateModel: {
+      invoiceId_Value: tranzactie.invoiceId,
+      date_Value: formatOrderDate(tranzactie.createdAt),
+      clientName_Value: `${tranzactie.fname + " " + tranzactie.lname}`,
+      email_Value: tranzactie.email,
+      phone_Value: tranzactie.phone,
+      dataRidicare_Value: tranzactie.dataRidicare,
+      produse_Value: productListHTML,
+      amount_Value: tranzactie.amount,
+    },
   });
-  const cristinaRes = await mail.send({
-    from: "Comanda Noua <noreply@deseosweets.ro>",
-    replyTo: "contact@deseosweets.ro",
-    templateId: "d-e249b7b12dcc48febaab1e52b67f9d1c",
-    personalizations: [
-      {
-        to: "contact@deseosweets.ro",
-        subject: `Comanda noua de la ${
-          tranzactie.fname + " " + tranzactie.lname
-        }`,
-        dynamicTemplateData: {
-          invoiceId: tranzactie.invoiceId,
-          date: formatOrderDate(tranzactie.createdAt),
-          clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
-          email: tranzactie.email,
-          phone: tranzactie.phone,
-          dataRidicare: tranzactie.dataRidicare,
-          produse: productListHTML,
-          amount: tranzactie.amount,
-        },
-      },
-    ],
+
+  const cristinaRes = await client.sendEmailWithTemplate({
+    From: "Comanda Noua <noreply@deseosweets.ro>",
+    ReplyTo: "contact@deseosweets.ro",
+    To: "contact@deseosweets.ro",
+    Subject: `Comanda noua de la ${
+      tranzactie.fname + " " + tranzactie.lname
+    }`,
+    TemplateId: 41029568,
+    TemplateModel: {
+      invoiceId_Value: tranzactie.invoiceId,
+      date_Value: formatOrderDate(tranzactie.createdAt),
+      clientName_Value: `${tranzactie.fname + " " + tranzactie.lname}`,
+      email_Value: tranzactie.email,
+      phone_Value: tranzactie.phone,
+      dataRidicare_Value: tranzactie.dataRidicare,
+      produse_Value: productListHTML,
+      amount_Value: tranzactie.amount,
+    },
   });
 
   return { res, cristinaRes };
 }
+
+
 function removeDiacriticsAndUppercase(str) {
   return str
     .normalize("NFD")

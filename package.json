@@ -20,7 +20,8 @@
     "euplatesc": "^1.0.5",
     "luxon": "^3.6.0",
     "pg": "^8.8.0",
-    "pg-connection-string": "^2.6.2"
+    "pg-connection-string": "^2.6.2",
+    "postmark": "^4.0.5"
   },
   "author": {
     "name": "A Strapi developer"

@@ -1,7 +1,7 @@
 require('dotenv').config();
-const mail = require('@sendgrid/mail');
+const postmark = require('postmark');
 
-mail.setApiKey(process.env.SENDGRID_API_KEY);
+const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
 module.exports = {
     async beforeCreate(event) {
@@ -63,18 +63,14 @@ module.exports = {
         if (result.email) {
 
             try {
-                await mail.send({
-                    from: 'Deseo Sweets<noreply@deseosweets.ro>',
-                    replyTo: 'contact@deseosweets.ro',
-                    templateId: "d-271fd4006f3b436c9776d01b7a6919dd",
-                    personalizations: [
-                        {
-                            to: `${result.email}`,
-                            dynamicTemplateData: {
-                                infotort: HTML,
-                            }
-                        }
-                    ]
+                await client.sendEmailWithTemplate({
+                    From: 'Deseo Sweets <noreply@deseosweets.ro>',
+                    ReplyTo: 'contact@deseosweets.ro',
+                    To: result.email,
+                    TemplateId: 41029921,
+                    TemplateModel: {
+                        infotort_Value: HTML,
+                    }
                 });
             } catch (error) {
                 console.log(error);
@@ -83,24 +79,21 @@ module.exports = {
 
         const sendToCristina = "contact@deseosweets.ro"
         try {
-            await mail.send({
-                from: 'Deseo Sweets<noreply@deseosweets.ro>',
-                replyTo: 'contact@deseosweets.ro',
-                templateId: "d-bf89833b11a643b48e5b29febef6aae1",
-                personalizations: [
-                    {
-                        to: `${sendToCristina}`,
-                        dynamicTemplateData: {
-                            nume: result.nume,
-                            prenume: result.prenume,
-                            email: result.email,
-                            telefon: result.telefon,
-                            dataRidicare: result.tort.dataRidicare,
-                            infotort: HTML,
-                            dynamicSubject: `Comanda tort - ${result.nume} ${result.prenume}`
-                        }
-                    }
-                ]
+            await client.sendEmailWithTemplate({
+                From: 'Deseo Sweets <noreply@deseosweets.ro>',
+                ReplyTo: 'contact@deseosweets.ro',
+                To: sendToCristina,
+                Subject: `Comanda tort - ${result.nume} ${result.prenume}`,
+                TemplateId: 40986828,
+                TemplateModel: {
+                    dynamicsubject_Value: `Comanda tort - ${result.nume} ${result.prenume}`,
+                    nume_Value: result.nume,
+                    prenume_Value: result.prenume,
+                    email_Value: result.email,
+                    telefon_Value: result.telefon,
+                    dataRidicare_Value: result.tort.dataRidicare,
+                    infotort_Value: HTML,
+                }
             });
         } catch (error) {
             console.log(error);

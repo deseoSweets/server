@@ -1,8 +1,8 @@
 
 require('dotenv').config();
-const mail = require('@sendgrid/mail');
+const postmark = require('postmark');
 
-mail.setApiKey(process.env.SENDGRID_API_KEY);
+const client = new postmark.ServerClient(process.env.POSTMARK_API_KEY);
 
 module.exports = {
 
@@ -10,27 +10,21 @@ module.exports = {
         const { result, params } = event
         if (result.adresaEmail) {
             try {
-                await mail.send({
-                    from: 'Deseo Sweets <noreply@deseosweets.ro>',
-                    replyTo: 'contact@deseosweets.ro',
-                    templateId: "d-f3a1e32223c74d2bbda7b7ae519a5831",
-                    personalizations: [
-                        {
-                            to: `${result.adresaEmail}`,
-                        }
-                    ]
+                await client.sendEmailWithTemplate({
+                    From: 'Deseo Sweets <noreply@deseosweets.ro>',
+                    ReplyTo: 'contact@deseosweets.ro',
+                    To: result.adresaEmail,
+                    TemplateId: 40986853,
+                    TemplateModel: {}
                 })
 
                  // DE IMBUNATATIT - CE I SE TRIMITE CRISTINEI
-                 await mail.send({
-                    from: 'Deseo Sweets <noreply@deseosweets.ro>',
-                    replyTo: 'contact@deseosweets.ro',
-                    templateId: "d-f3a1e32223c74d2bbda7b7ae519a5831",
-                    personalizations: [
-                        {
-                            to: `contact@deseosweets.ro`,
-                        }
-                    ]
+                 await client.sendEmailWithTemplate({
+                    From: 'Deseo Sweets <noreply@deseosweets.ro>',
+                    ReplyTo: 'contact@deseosweets.ro',
+                    To: 'contact@deseosweets.ro',
+                    TemplateId: 40986853,
+                    TemplateModel: {}
                 })
             } catch (error) {
                 console.log(error)
