@@ -85,14 +85,14 @@ async function sendOrderEmail(tranzactie) {
     To: tranzactie.email,
     TemplateId: 41029568,
     TemplateModel: {
-      invoiceId_Value: tranzactie.invoiceId,
-      date_Value: formatOrderDate(tranzactie.createdAt),
-      clientName_Value: `${tranzactie.fname + " " + tranzactie.lname}`,
-      email_Value: tranzactie.email,
-      phone_Value: tranzactie.phone,
-      dataRidicare_Value: tranzactie.dataRidicare,
-      produse_Value: productListHTML,
-      amount_Value: tranzactie.amount,
+      invoiceId: tranzactie.invoiceId,
+      date: formatOrderDate(tranzactie.createdAt),
+      clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
+      email: tranzactie.email,
+      phone: tranzactie.phone,
+      dataRidicare: tranzactie.dataRidicare,
+      produse: productListHTML,
+      amount: tranzactie.amount,
     },
   });
 
@@ -100,19 +100,16 @@ async function sendOrderEmail(tranzactie) {
     From: "Comanda Noua <noreply@deseosweets.ro>",
     ReplyTo: "contact@deseosweets.ro",
     To: "contact@deseosweets.ro",
-    Subject: `Comanda noua de la ${
-      tranzactie.fname + " " + tranzactie.lname
-    }`,
     TemplateId: 41029568,
     TemplateModel: {
-      invoiceId_Value: tranzactie.invoiceId,
-      date_Value: formatOrderDate(tranzactie.createdAt),
-      clientName_Value: `${tranzactie.fname + " " + tranzactie.lname}`,
-      email_Value: tranzactie.email,
-      phone_Value: tranzactie.phone,
-      dataRidicare_Value: tranzactie.dataRidicare,
-      produse_Value: productListHTML,
-      amount_Value: tranzactie.amount,
+      invoiceId: tranzactie.invoiceId,
+      date: formatOrderDate(tranzactie.createdAt),
+      clientName: `${tranzactie.fname + " " + tranzactie.lname}`,
+      email: tranzactie.email,
+      phone: tranzactie.phone,
+      dataRidicare: tranzactie.dataRidicare,
+      produse: productListHTML,
+      amount: tranzactie.amount,
     },
   });
 
